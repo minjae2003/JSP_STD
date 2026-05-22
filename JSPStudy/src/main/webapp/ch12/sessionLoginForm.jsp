@@ -14,8 +14,6 @@
 		패스워드 : <input type="password" name ="passwd" maxlength="20">
 		<input type="submit" value="로그인">
 		<input type="button" value="회원가입" onclick="location.href = 'insertMembersForm.jsp'">
-		<input type="button" value="회원가입1" onclick="location.href = 'insertMembersForm.jsp'">
-		
 	</form>
 </body>
 </html>
