@@ -170,8 +170,15 @@ public class FreeboardDAO {
 
         try {
             conn = getConnection();
+            
+            String sql = "delete from replyfreeboard where ref=?";
+            pstmt = conn.prepareStatement(sql);
 
-            String sql = "delete from freeboard where num=?";
+            pstmt.setInt(1, num);
+
+            pstmt.executeUpdate();
+
+            sql = "delete from freeboard where num=?";
             pstmt = conn.prepareStatement(sql);
 
             pstmt.setInt(1, num);

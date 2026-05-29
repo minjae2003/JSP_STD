@@ -1,9 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="freeboard.FreeboardDAO" %>
 <%@ page import="freeboard.FreeboardVO" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-
+<%@ page import="replyfreeboard.ReplyfreeboardVO" %>
+<%@ page import="replyfreeboard.ReplyfreeboardDAO" %>
+<%@ page import="java.util.List" %>
 <%
 	request.setCharacterEncoding("UTF-8");
 
@@ -13,8 +14,17 @@
 
 	FreeboardDAO fbdao = FreeboardDAO.getInstance();
 	FreeboardVO fb = fbdao.getFreeboard(num);
-%>
+	
+	List<ReplyfreeboardVO> rList = null;
+	int rcount = 0;
 
+	ReplyfreeboardDAO rdao = ReplyfreeboardDAO.getInstance();
+	rcount = rdao.getReplyFreeboardCount(num);
+
+	if(rcount > 0){
+	    rList = rdao.getReplyFreeboards(num);
+	}
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,11 +35,26 @@
 <link href="../css/board.css" rel="stylesheet" type="text/css">
 
 <script>
+	function check_input() {
+		// trim()을 추가하여 띄어쓰기만 입력하는 것도 방지합니다.
+		if(!document.reply_form.reply.value.trim()){
+			alert("댓글을 입력하세요!");
+			document.reply_form.reply.focus(); // (수정) reply 창에 포커스 조절
+			return;
+		}
+		document.reply_form.submit();
+	}
+	
 	function del(num) {
 		if(confirm("삭제하시겠습니까?")) {
 			location.href = "deletePro.jsp?num=" + num;
-		} else {
-			location.href = "list.jsp";
+		}
+	}
+	
+	// (추가) 댓글 삭제를 위한 자바스크립트 함수
+	function delReply(rnum, num) {
+		if(confirm("댓글을 삭제하시겠습니까?")) {
+			location.href = "replyDelete.jsp?rnum=" + rnum + "&num=" + num;
 		}
 	}
 </script>
@@ -46,7 +71,6 @@
 
 <div id="board_box">
 <ul id="view_content">
-
 	<li>
 		<span class="col1"><b>제 목 : <%= fb.getSubject() %></b></span>
 		<span class="col2">
@@ -55,48 +79,70 @@
 			조회 <%= fb.getReadcount() %>
 		</span>
 	</li>
-
 	<li id="text">
 		<%= fb.getContent() %>
 	</li>
-
 </ul>
 
 <ul class="buttons">
 <%
 	String id = (String)session.getAttribute("id");
-
 	if(id != null && id.equals(fb.getWriter())) {
 %>
-	<li>
-		<button onclick="location.href='updateForm.jsp?num=<%= fb.getNum() %>'">
-			수정
-		</button>
-	</li>
-
-	<li>
-		<button onclick="del(<%= fb.getNum() %>)">
-			삭제
-		</button>
-	</li>
-
-	<li>
-		<button onclick="location.href='list.jsp'">
-			목록
-		</button>
-	</li>
-<%
-	} else {
-%>
-	<li>
-		<button onclick="location.href='list.jsp'">
-			목록
-		</button>
-	</li>
+	<li><button type="button" onclick="location.href='updateForm.jsp?num=<%= fb.getNum() %>'">수정</button></li>
+	<li><button type="button" onclick="del(<%= fb.getNum() %>)">삭제</button></li>
 <%
 	}
 %>
+	<li><button type="button" onclick="location.href='list.jsp'">목록</button></li>
 </ul>
+
+<%
+if(rcount > 0){
+%>
+    <ul id="reply_content">
+<%
+    for(int i = 0; i < rList.size(); i++){
+        ReplyfreeboardVO reply = rList.get(i);
+%>
+        <li>
+            <span class="col1"><%= reply.getRwriter() %></span>
+            <span class="col2"><%= reply.getReply().replace("\r\n","<br>") %></span>
+            <span class="col3"><%= sdf.format(reply.getRreg_date()) %></span>
+            
+            <%-- (수정) <li> 태그 안쪽으로 이동 및 글번호 파라미터 전달 처리 --%>
+            <% if(id != null && id.equals(reply.getRwriter())){ %>
+       			<span class="col4">
+       				<%-- ※ reply.getRnum() 부분은 본인의 VO에 정의된 댓글 기본키 메서드로 매칭하세요 --%>
+       				<button type="button" onclick="delReply(<%= reply.getRnum() %>, <%= num %>)">삭제</button>
+       			</span>
+       		<% } %>
+        </li>
+<%
+    }
+%>
+    </ul>
+<%
+}
+%>
+
+<form name="reply_form" method="post" action="replyWriterPro.jsp">
+	<input type="hidden" name="rwriter" value="<%=id %>">
+	<input type="hidden" name="ref" value="<%=num %>">
+
+	<ul id="reply_form">
+	<% if (id == null || id.equals("")) { %>
+		<li> * 댓글은 회원만 가능합니다 * </li>
+	<% } else { %>
+		<li>
+			<span class="col1"><%=id%></span>
+			<span class="col2"><textarea name="reply"></textarea></span>
+			<%-- (수정) type="button" 지정 --%>
+			<span class="col3"><button type="button" onclick="check_input()">입력</button></span>
+		</li>
+	<% } %>
+    </ul>
+</form>
 
 </div>
 </section>

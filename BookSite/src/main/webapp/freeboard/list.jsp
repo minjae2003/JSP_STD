@@ -1,10 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%@ page import="replyfreeboard.ReplyfreeboardVO" %>
+<%@ page import="replyfreeboard.ReplyfreeboardDAO" %>
 <%@ page import="freeboard.FreeboardDAO" %>
 <%@ page import="freeboard.FreeboardVO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.List" %>
+
+
 
 <%
 	int count = 0;
@@ -18,6 +23,9 @@
 	if(count > 0) {
 		fbList = fbdao.getFreeboards();
 	}
+	
+	int rcount =0; //댓글수
+	ReplyfreeboardDAO rdao = ReplyfreeboardDAO.getInstance();
 %>
 
 <!DOCTYPE html>
@@ -51,13 +59,16 @@
 	if(fbList != null) {
 		for(int i = 0; i < fbList.size(); i++) {
 			FreeboardVO fb = fbList.get(i);
+			rcount = rdao.getReplyFreeboardCount(fb.getNum());
 %>
 	<li>
 		<span class="col1"><%= count-- %></span>
-		<span class="col2">
-			<a href="content.jsp?num=<%= fb.getNum() %>">
-				<%= fb.getSubject() %>
-			</a>
+		<span class="col2"><a href="content.jsp?num=<%= fb.getNum() %>"><%= fb.getSubject() %></a>
+			<span class="replycount">
+			 <% if(rcount > 0){%>
+				[<%=rcount %>]
+			 <% } %>
+			</span>
 		</span>
 		<span class="col3"><%= fb.getWriter() %></span>
 		<span class="col4"><%= sdf.format(fb.getReg_date()) %></span>
