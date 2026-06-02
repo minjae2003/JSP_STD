@@ -36,7 +36,7 @@
 
 <script>
 	function check_input() {
-		// trim()을 추가하여 띄어쓰기만 입력하는 것도 방지합니다.
+		// trim()을 추가하여 띄어쓰기만 입력하는 것도 방지합니다.a
 		if(!document.reply_form.reply.value.trim()){
 			alert("댓글을 입력하세요!");
 			document.reply_form.reply.focus(); // (수정) reply 창에 포커스 조절
@@ -110,7 +110,7 @@ if(rcount > 0){
             <span class="col2"><%= reply.getReply().replace("\r\n","<br>") %></span>
             <span class="col3"><%= sdf.format(reply.getRreg_date()) %></span>
             
-            <%-- (수정) <li> 태그 안쪽으로 이동 및 글번호 파라미터 전달 처리 --%>
+            <%--  <li> 태그 안쪽으로 이동 및 글번호 파라미터 전달 처리 --%>
             <% if(id != null && id.equals(reply.getRwriter())){ %>
        			<span class="col4">
        				<%-- ※ reply.getRnum() 부분은 본인의 VO에 정의된 댓글 기본키 메서드로 매칭하세요 --%>
