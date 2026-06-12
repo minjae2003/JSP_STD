@@ -19,6 +19,27 @@ values ('aaa', 'subject test2', now(), 'content test2');
 insert into freeboard(writer, subject, reg_date, content)
 values ('bbb', 'subject test3', now(), 'content test3');
 
+insert into freeboard(writer, subject, reg_date, content)
+values ('ccc', 'subject test4', now(), 'content test4');
+
+insert into freeboard(writer, subject, reg_date, content)
+values ('ddd', 'subject test5', now(), 'content test5');
+
+insert into freeboard(writer, subject, reg_date, content)
+values ('eee', 'subject test6', now(), 'content test6');
+
+insert into freeboard(writer, subject, reg_date, content)
+values ('fff', 'subject test7', now(), 'content test7');
+
+insert into freeboard(writer, subject, reg_date, content)
+values ('ggg', 'subject test8', now(), 'content test8');
+
+insert into freeboard(writer, subject, reg_date, content)
+values ('hhh', 'subject test9', now(), 'content test9');
+
+insert into freeboard(writer, subject, reg_date, content)
+values ('iii', 'subject test10', now(), 'content test10');
+
 select * from freeboard order by num desc;
 
 delete from freeboard where num=5;

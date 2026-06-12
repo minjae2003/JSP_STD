@@ -5,10 +5,17 @@
 <%@ page import="replyfreeboard.ReplyfreeboardVO" %>
 <%@ page import="replyfreeboard.ReplyfreeboardDAO" %>
 <%@ page import="java.util.List" %>
+
 <%
 	request.setCharacterEncoding("UTF-8");
 
 	int num = Integer.parseInt(request.getParameter("num"));
+
+	String pageNumStr = request.getParameter("pageNum");
+	if(pageNumStr == null) {
+		pageNumStr = "1";
+	}
+	int pageNum = Integer.parseInt(pageNumStr);
 
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -21,10 +28,11 @@
 	ReplyfreeboardDAO rdao = ReplyfreeboardDAO.getInstance();
 	rcount = rdao.getReplyFreeboardCount(num);
 
-	if(rcount > 0){
+	if(rcount > 0) {
 	    rList = rdao.getReplyFreeboards(num);
 	}
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,25 +44,23 @@
 
 <script>
 	function check_input() {
-		// trim()을 추가하여 띄어쓰기만 입력하는 것도 방지합니다.a
-		if(!document.reply_form.reply.value.trim()){
+		if(!document.reply_form.reply.value.trim()) {
 			alert("댓글을 입력하세요!");
-			document.reply_form.reply.focus(); // (수정) reply 창에 포커스 조절
+			document.reply_form.reply.focus();
 			return;
 		}
 		document.reply_form.submit();
 	}
 	
-	function del(num) {
+	function del(num, pageNum) {
 		if(confirm("삭제하시겠습니까?")) {
-			location.href = "deletePro.jsp?num=" + num;
+			location.href = "deletePro.jsp?num=" + num + "&pageNum=" + pageNum;
 		}
 	}
 	
-	// (추가) 댓글 삭제를 위한 자바스크립트 함수
-	function delReply(rnum, num) {
+	function delReply(rnum, num, pageNum) {
 		if(confirm("댓글을 삭제하시겠습니까?")) {
-			location.href = "replyDelete.jsp?rnum=" + rnum + "&num=" + num;
+			location.href = "replyDelete.jsp?rnum=" + rnum + "&num=" + num + "&pageNum=" + pageNum;
 		}
 	}
 </script>
@@ -87,61 +93,86 @@
 <ul class="buttons">
 <%
 	String id = (String)session.getAttribute("id");
+
 	if(id != null && id.equals(fb.getWriter())) {
 %>
-	<li><button type="button" onclick="location.href='updateForm.jsp?num=<%= fb.getNum() %>'">수정</button></li>
-	<li><button type="button" onclick="del(<%= fb.getNum() %>)">삭제</button></li>
+	<li>
+		<button type="button" onclick="location.href='updateForm.jsp?num=<%= fb.getNum() %>&pageNum=<%= pageNum %>'">
+			수정
+		</button>
+	</li>
+	<li>
+		<button type="button" onclick="del(<%= fb.getNum() %>, <%= pageNum %>)">
+			삭제
+		</button>
+	</li>
 <%
 	}
 %>
-	<li><button type="button" onclick="location.href='list.jsp'">목록</button></li>
+	<li>
+		<button type="button" onclick="location.href='list.jsp?pageNum=<%= pageNum %>'">
+			목록
+		</button>
+	</li>
 </ul>
 
 <%
-if(rcount > 0){
+if(rcount > 0) {
 %>
-    <ul id="reply_content">
+	<ul id="reply_content">
 <%
-    for(int i = 0; i < rList.size(); i++){
-        ReplyfreeboardVO reply = rList.get(i);
+	for(int i = 0; i < rList.size(); i++) {
+		ReplyfreeboardVO reply = rList.get(i);
 %>
-        <li>
-            <span class="col1"><%= reply.getRwriter() %></span>
-            <span class="col2"><%= reply.getReply().replace("\r\n","<br>") %></span>
-            <span class="col3"><%= sdf.format(reply.getRreg_date()) %></span>
-            
-            <%--  <li> 태그 안쪽으로 이동 및 글번호 파라미터 전달 처리 --%>
-            <% if(id != null && id.equals(reply.getRwriter())){ %>
-       			<span class="col4">
-       				<%-- ※ reply.getRnum() 부분은 본인의 VO에 정의된 댓글 기본키 메서드로 매칭하세요 --%>
-       				<button type="button" onclick="delReply(<%= reply.getRnum() %>, <%= num %>)">삭제</button>
-       			</span>
-       		<% } %>
-        </li>
+		<li>
+			<span class="col1"><%= reply.getRwriter() %></span>
+			<span class="col2"><%= reply.getReply().replace("\r\n", "<br>") %></span>
+			<span class="col3"><%= sdf.format(reply.getRreg_date()) %></span>
+
+			<%
+				if(id != null && id.equals(reply.getRwriter())) {
+			%>
+				<span class="col4">
+					<button type="button" onclick="delReply(<%= reply.getRnum() %>, <%= num %>, <%= pageNum %>)">
+						삭제
+					</button>
+				</span>
+			<%
+				}
+			%>
+		</li>
 <%
-    }
+	}
 %>
-    </ul>
+	</ul>
 <%
 }
 %>
 
 <form name="reply_form" method="post" action="replyWriterPro.jsp">
-	<input type="hidden" name="rwriter" value="<%=id %>">
-	<input type="hidden" name="ref" value="<%=num %>">
+	<input type="hidden" name="rwriter" value="<%= id %>">
+	<input type="hidden" name="ref" value="<%= num %>">
+	<input type="hidden" name="pageNum" value="<%= pageNum %>">
 
 	<ul id="reply_form">
-	<% if (id == null || id.equals("")) { %>
+	<%
+		if(id == null || id.equals("")) {
+	%>
 		<li> * 댓글은 회원만 가능합니다 * </li>
-	<% } else { %>
+	<%
+		} else {
+	%>
 		<li>
-			<span class="col1"><%=id%></span>
+			<span class="col1"><%= id %></span>
 			<span class="col2"><textarea name="reply"></textarea></span>
-			<%-- (수정) type="button" 지정 --%>
-			<span class="col3"><button type="button" onclick="check_input()">입력</button></span>
+			<span class="col3">
+				<button type="button" onclick="check_input()">입력</button>
+			</span>
 		</li>
-	<% } %>
-    </ul>
+	<%
+		}
+	%>
+	</ul>
 </form>
 
 </div>

@@ -58,7 +58,7 @@ public class FreeboardDAO {
         return count;
     }
 
-    public List<FreeboardVO> getFreeboards() {
+    public List<FreeboardVO> getFreeboards(int start, int end) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -68,8 +68,10 @@ public class FreeboardDAO {
         try {
             conn = getConnection();
 
-            String sql = "select * from freeboard order by num desc";
+            String sql = "select * from freeboard order by num desc limit ?, ?";
             pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, start-1);
+            pstmt.setInt(2, end);
             rs = pstmt.executeQuery();
 
             while(rs.next()) {
