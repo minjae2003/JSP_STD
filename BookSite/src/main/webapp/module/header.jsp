@@ -43,7 +43,7 @@
             <li><a href="../main/main.jsp">HOME</a></li>
             <li><a href="../book/booklist.jsp">도서소개</a></li>
             <li><a href="../freeboard/list.jsp">게시판</a></li>
-            <li><a href="#">Q & A</a></li>
+            <li><a href="../qna/qnaList.jsp">Q & A</a></li>
             <li><a href="#">사이트맵</a></li>
         </ul>
     </nav>
