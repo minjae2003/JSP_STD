@@ -14,7 +14,6 @@ public class QnaDTO {
     private int re_level;
     private String secret;
 
-    
     public int getNum() { return num; }
     public void setNum(int num) { this.num = num; }
 
