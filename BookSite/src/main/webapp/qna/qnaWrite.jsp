@@ -62,9 +62,10 @@
                     <th>내 &nbsp; 용</th>
                     <td>
                         <textarea name="content" class="input-textarea" required></textarea>
-                        <div class="secret-opt">
+                       <!--  
+                       <div class="secret-opt">
                             <label><input type="checkbox" name="secret" value="Y"> 비밀글로 작성하기 🔒</label>
-                        </div>
+                        </div>-->
                     </td>
                 </tr>
             </table>

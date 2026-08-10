@@ -20,3 +20,5 @@ CREATE TABLE qna_comment (
 );
 
 ALTER TABLE qna ADD secret VARCHAR(1) DEFAULT 'N';
+
+SELECT * FROM qna;
