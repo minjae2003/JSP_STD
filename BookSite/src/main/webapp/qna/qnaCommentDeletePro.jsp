@@ -7,7 +7,6 @@
 
     QnaDAO dao = QnaDAO.getInstance();
     int result = dao.deleteQnaComment(c_num);
-
     if (result > 0) {
 %>
         <script>
