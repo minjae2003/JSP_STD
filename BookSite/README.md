@@ -1,39 +1,51 @@
-# 📚 BookSite (JSP/Servlet 도서 웹 애플리케이션)
+# 📚 BookSite (도서 소개 및 게시판 관리 웹 서비스)
 
-JSP와 Servlet, JDBC를 활용하여 구현한 **웹 기반 도서 쇼핑몰/관리 시스템**입니다.
-
----
-
-## 📌 주요 기능 (Key Features)
-
-* **회원 관리**: 회원가입, 로그인/로그아웃, 회원 정보 수정
-* **도서 목록 및 검색**: 메인 페이지(`main.jsp`) 도서 리스트 조회, 카테고리 분류, 검색 기능
-* **도서 상세 정보 및 장바구니**: 도서 상세 보기, 장바구니 담기 및 수량 변경
-* **주문/결제 처리**: 장바구니 상품 주문 및 구매 내역 확인
-* **게시판**: 도서 리뷰 및 문의 게시판
+JSP/Servlet과 DAO/DTO 아키텍처 기반으로 구축된 **도서 정보 제공 및 커뮤니티 웹 애플리케이션**입니다.  
+회원 관리부터 도서 목록 조회, 자유게시판, Q&A 게시판, 사이트맵까지 통합 관리되는 데이터베이스 연동형 웹 서비스를 제공합니다.
 
 ---
 
 ## 🛠 기술 스택 (Tech Stack)
 
-| 구분 | 기술 |
+| 구분 | 사용 기술 및 환경 |
 | :--- | :--- |
-| **Language** | Java, JSP, HTML5/CSS3, JavaScript |
-| **Server** | Apache Tomcat 9.0+ |
-| **Database** | MySQL / Oracle DB (JDBC 연동) |
-| **Architecture** | MVC Pattern (JSP - Servlet - DAO/DTO) |
-| **IDE** | Eclipse / IntelliJ IDEA |
+| **Backend** | Java, JSP (JavaServer Pages) |
+| **Database** | MySQL, JDBC (Java Database Connectivity) |
+| **Frontend** | HTML5, CSS3 (`style.css`) |
+| **Architecture** | Model 1 (JSP + JavaBean/DTO + DAO) |
+| **Tools / Server** | Eclipse IDE, Apache Tomcat |
 
 ---
 
-## 📁 프로젝트 구조 (Project Structure)
+## 📁 프로젝트 디렉토리 구조 (Directory Structure)
 
 ```text
 BookSite/
-├── src/main/java/        # Servlet, DAO, DTO, DB 연결 클래스
-└── src/main/webapp/      # JSP, HTML, CSS, JS 및 웹 자원
+├── src/
+│   └── main/
+│       └── java/
+│           └── qna/
+│               ├── QnaDAO.java          # Q&A 게시판 DB 연동 (Singleton CRUD)
+│               └── QnaDTO.java          # Q&A 게시판 데이터 객체 (Value Object)
+└── src/main/webapp/
+    ├── css/
+    │   └── style.css            # 전체 사이트 공통 스타일시트
+    ├── header.jsp               # 상단 공통 로고, 세션 기반 가변 메뉴, 보라색 네비게이션 바
     ├── main/
-    │   └── main.jsp      # 메인 메인 페이지
-    ├── member/           # 로그인/회원가입 관련 JSP
-    ├── book/             # 도서 목록/상세 페이지 JSP
-    └── WEB-INF/          # web.xml 및 라이브러리(.jar)
+    │   └── main.jsp             # 메인 랜딩 페이지
+    ├── book/
+    │   └── booklist.jsp         # 도서 소개 목록 페이지
+    ├── freeboard/
+    │   └── list.jsp             # 자유게시판 목록 페이지
+    ├── qna/
+    │   ├── qnaList.jsp          # Q&A 목록 조회 페이지
+    │   ├── qnaWrite.jsp         # Q&A 글쓰기 폼
+    │   ├── qnaWritePro.jsp      # Q&A 글 등록 처리
+    │   └── qnaDetail.jsp        # Q&A 상세보기 및 조회수 증가 처리
+    ├── member/
+    │   ├── memberForm.jsp       # 회원가입 폼
+    │   ├── loginForm.jsp        # 로그인 폼
+    │   ├── LogoutPro.jsp        # 로그아웃 처리
+    │   └── memberupdateForm.jsp # 회원정보 수정 폼
+    └── finalPage/
+        └── index.jsp            # 사이트맵 및 프로젝트 요약 가이드
