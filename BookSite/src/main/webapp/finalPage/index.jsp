@@ -10,9 +10,16 @@
 	table,tr,th,td{border: 2px solid black}
 	table { border-collapse: collapse;}
 	td{ padding-left:5px; padding-right:5px;}
+	h3{ font-size: 16px; margin-bottom: 12px; color: #423853; margin-left:10px;}
+	ul{ line-height: 2.0; padding-left: 20px; font-size: 14px; color: #333;}
 	
+	.page-title{ margin:10px;}
+	.mainpage{ background-color: #fafafa; border: 1px solid #e0e0e0; margin-left:10px; padding: 20px; border-radius: 4px; margin-bottom: 30px; line-height: 1.6; font-size: 14px;}
+	.subpage{ border: 1px solid #eee; padding: 20px; background-color: #fff; margin-bottom: 30px;}
+	.homepage-table{ magin-bottom:30px; margin:10px 10px;}
 	.btn-style { background-color: #ffffff; border: 1px solid #b0b0b0; padding: 5px 16px; font-size: 12px; cursor: pointer; color: #333; margin-left: 4px; }
     .btn-style:hover { background-color: #f0f0f0; }
+    .buttonStyle{ text-align: center; margin-bottom: 40px;}
 </style>
 </head>
 <body>
@@ -23,14 +30,14 @@
     <h2 class="page-title">사이트맵 &gt; 전체 메뉴 및 기능 안내</h2>
 
     <!-- 프로젝트 개요 -->
-    <div style="background-color: #fafafa; border: 1px solid #e0e0e0; padding: 20px; border-radius: 4px; margin-bottom: 30px; line-height: 1.6; font-size: 14px;">
+    <div class="mainpage">
         <b>BookSite</b>는 JSP/Servlet과 DAO/DTO/VO 아키텍처 기반으로 구축된 도서 소개 및 게시판 관리 웹 프로젝트입니다.<br>
         메인 홈 화면을 비롯하여 도서 정보 제공, 자유게시판, Q&A 게시판 및 회원 관리 기능을 통합 제공합니다.
     </div>
 
     <!-- 1. 주요 메뉴별 기능 상세 (HOME / 도서소개 / 게시판 / Q&A / 회원관리) -->
-    <h3 style="font-size: 16px; margin-bottom: 12px; color: #423853;">1. 주요 메뉴별 기능 상세</h3>
-    <table class="qna-table" style="margin-bottom: 30px;">
+    <h3>1. 주요 메뉴별 기능 상세</h3>
+    <table class="homepage-table" >
         <tr>
             <th width="15%">메뉴명</th>
             <th width="25%">관련 페이지 (경로)</th>
@@ -69,8 +76,8 @@
     </table>
 
     <!-- 2. 기술 스택 (Tech Stack) -->
-    <h3 style="font-size: 16px; margin-bottom: 12px; color: #423853;">2. 기술 스택 (Tech Stack)</h3>
-    <table class="qna-table" style="margin-bottom: 30px;">
+    <h3>2. 기술 스택 (Tech Stack)</h3>
+    <table class="homepage-table">
         <tr>
             <th width="25%">구분</th>
             <th width="75%">사용 기술 및 개발 환경</th>
@@ -94,9 +101,9 @@
     </table>
 
     <!-- 3. 주요 구현 특징 -->
-    <h3 style="font-size: 16px; margin-bottom: 12px; color: #423853;">3. 주요 구현 특징</h3>
-    <div style="border: 1px solid #eee; padding: 20px; background-color: #fff; margin-bottom: 30px;">
-        <ul style="line-height: 2.0; padding-left: 20px; font-size: 14px; color: #333;">
+    <h3>3. 주요 구현 특징</h3>
+    <div class="subpage">
+        <ul>
             <li><b>통합 네비게이션 체계:</b> <code>header.jsp</code> 공통 모듈을 통해 메인(HOME), 도서소개, 게시판, Q&A, 사이트맵 간 자유로운 이동이 가능합니다.</li>
             <li><b>세션 기반 로그인 상태 처리:</b> 세션 상태에 따라 상단 메뉴가 '회원가입/로그인' 또는 'OOO님/로그아웃/정보수정'으로 자동 전환됩니다.</li>
             <li><b>객체지향 DB 연동 (DAO/DTO):</b> Q&A 게시판 및 회원 관리의 데이터 처리를 DAO 클래스로 분리하여 유지보수성을 높였습니다.</li>
@@ -104,7 +111,7 @@
     </div>
 
     <!-- 하단 메인 이동 버튼 -->
-    <div style="text-align: center; margin-bottom: 40px;">
+    <div class="buttonStyle">
     	<button type="button" class="btn-style" onclick="location.href='../main/main.jsp'"> 메인화면 이동</button>
     </div>
 </div>
